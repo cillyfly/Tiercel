@@ -138,18 +138,22 @@ extension Cache {
     
     public func fileURL(fileName: String) -> URL? {
         guard let path = filePath(fileName: fileName) else { return nil }
+        manager?.log(.error("fileURL check file is exist \(path)", error: TiercelError.unknown))
         return URL(fileURLWithPath: path)
     }
     
     public func fileExists(fileName: String) -> Bool {
         guard let path = filePath(fileName: fileName) else { return false }
+        manager?.log(.error(" fileExists check file is exist \(path) and is exist \(fileManager.fileExists(atPath: path))", error: TiercelError.unknown))
         return fileManager.fileExists(atPath: path)
     }
     
     public func filePath(url: URLConvertible) -> String? {
         do {
             let validURL = try url.asURL()
+            manager?.log(.error("vaildUrl is \(validURL)", error:TiercelError.unknown ))
             let fileName = validURL.tr.fileName
+            manager?.log(.error("fileName is \(fileName)", error:TiercelError.unknown ))
             return filePath(fileName: fileName)
         } catch {
             return nil
